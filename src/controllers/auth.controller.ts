@@ -43,6 +43,7 @@ class AuthController extends BaseController {
 
     static async changePassword(req: Request, res: Response) {
         try {
+            console.log(req.body);
             let { oldPassword, newPassword } = req.body;
             await AuthServices.changePassword(req.user, oldPassword, newPassword);
             res.status(200).json({ message: 'Reset password successfully!' })
