@@ -6,6 +6,7 @@ import User from "../models/user.model";
 import AuthServices from "../services/auth.services";
 import BaseServices from "../services/base.services";
 import UserServices from "../services/user.services";
+import { log } from "console";
 
 let userRepo = dataSource.getRepository(User);
 
