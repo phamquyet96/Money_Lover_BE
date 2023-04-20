@@ -9,40 +9,40 @@ import Transaction from "./transaction.model";
 export class Wallet {
 
     @PrimaryGeneratedColumn({ name: "id", type: "int" })
-        //@ts-ignore
+    //@ts-ignore
     id: number;
 
     @ManyToOne(() => User, user => user.wallets, {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "user_id" })
-        //@ts-ignore
+    //@ts-ignore
     user: User;
 
     @Column({ name: "name", type: "varchar", length: 255, nullable: false })
-        //@ts-ignore
+    //@ts-ignore
     name: string;
 
     @Column({ name: "balance", type: "int", nullable: false })
-        //@ts-ignore
+    //@ts-ignore
     balance: number;
 
-    @Column({ name: "initial_balance", type: "int", nullable: false})
-        //@ts-ignore
-    initialBalance: number;    
+    @Column({ name: "initial_balance", type: "int", nullable: false })
+    //@ts-ignore
+    initialBalance: number;
 
-    @Column({ name: "include_total", type: "boolean", default: true})
-        //@ts-ignore
-    includeTotal: boolean;
+    @Column({ name: "include_total", type: "int"})
+    //@ts-ignore
+    includeTotal: number;
 
     @Column({ name: "active", type: "boolean", default: true })
-        //@ts-ignore
+    //@ts-ignore
     active: boolean;
 
     @OneToMany(() => Transaction, transaction => transaction.wallet, {
         cascade: true
     })
-        //@ts-ignore
+    //@ts-ignore
     transactions: Transaction[];
 }
 
