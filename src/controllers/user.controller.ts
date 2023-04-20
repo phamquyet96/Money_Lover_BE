@@ -24,10 +24,10 @@ class UserController extends BaseController {
   }
 
   async update(req: any, res: Response) {
+    console.log(req.body);
     let id = req.user.id
-    let arr = Object.keys(req.body)
-    let image = arr[0].replace('upload/', 'upload%2F') + '=' + req.body[arr[0]] + '&' + arr[1] + '=' + req.body[arr[1]];
-    await UserServices.updateUser(id, image)
+
+    await UserServices.updateUser(id, req.body)
     res.status(200).json({
       message: 'Update successfully!'
     })

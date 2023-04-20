@@ -25,9 +25,8 @@ class AuthController extends BaseController {
         try {
             let {name, email, password } = req.body;
             let [accessToken, refreshToken] = await AuthServices.checkAuthAndGenerateTokens(email, password);
-            console.log(accessToken, refreshToken)
             res.status(200).json({
-                user: { name, email, password},
+                user:{name,email,password},
                 accessToken: accessToken,
                 refreshToken: refreshToken,
             });
