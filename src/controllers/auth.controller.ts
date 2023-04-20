@@ -24,9 +24,10 @@ class AuthController extends BaseController {
 
     static async login(req: Request, res: Response) {
         try {
-            let { email, password } = req.body;
+            let {name, email, password } = req.body;
             let [accessToken, refreshToken] = await AuthServices.checkAuthAndGenerateTokens(email, password);
             res.status(200).json({
+                user: { name, email, password},
                 accessToken: accessToken,
                 refreshToken: refreshToken,
             });
@@ -99,6 +100,7 @@ class AuthController extends BaseController {
             res.status(500).json({message: err.message || this.defaultErrorMessage});
         }
     }
+
 }
 
 export default AuthController;

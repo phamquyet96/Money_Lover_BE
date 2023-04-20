@@ -2,7 +2,6 @@ import dataSource from "../database/data-source";
 import User from "../models/user.model";
 import jwt from 'jsonwebtoken';
 import BaseController from "../controllers/base.controller";
-import { log } from "console";
 require('dotenv').config();
 
 let userRepo = dataSource.getRepository(User);
@@ -19,6 +18,7 @@ class AuthMiddleware {
             const token = authHeader.split(" ")[1];
             jwt.verify(token, `${process.env.JWT_SECRET_KEY}`, async (err, decoded) => {
                 if (err) {
+                    console.log(err)
                     return res.status(403).json("Token is not valid!");
                 }
                 let user = await userRepo.findOneBy({ id: decoded.id });
