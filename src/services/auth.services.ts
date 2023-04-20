@@ -164,7 +164,7 @@ class AuthServices extends BaseServices {
             else {
                 console.log('Message sent: ' + info.response);
             }
-        })
+        });
     }
 }
 

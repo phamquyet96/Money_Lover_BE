@@ -10,16 +10,18 @@ class AuthMiddleware {
 
     static checkAuthentication(req, res, next) {
         const authHeader = req.headers.authorization;
-        console.log(authHeader);
-        if (authHeader) {
+ if (authHeader) {
+            console.log(authHeader);
+
             const token = authHeader.split(" ")[1];
             jwt.verify(token, `${process.env.JWT_SECRET_KEY}`, async (err, decoded) => {
                 if (err) {
+                    console.log(err)
                     return res.status(403).json("Token is not valid!");
                 }
-                let user = await userRepo.findOneBy({id: decoded.id});
+                let user = await userRepo.findOneBy({ id: decoded.id });
                 if (!user) {
-                    return res.status(401).json({message: 'Unauthorized!'});
+                    return res.status(401).json({ message: 'Unauthorized!' });
                 }
                 req.user = user;
                 next();
@@ -36,7 +38,7 @@ class AuthMiddleware {
             if (err) {
                 return res.status(403).json("Refresh token is not valid!");
             }
-            let user = await userRepo.findOneBy({id: decoded.id});
+            let user = await userRepo.findOneBy({ id: decoded.id });
             if (user.refreshToken === refreshToken) {
                 let payload = {
                     id: user.id,
@@ -55,7 +57,7 @@ class AuthMiddleware {
             } else {
                 return res.status(403).json("Refresh token is not valid!");
             }
-            }
+        }
         );
     }
 
