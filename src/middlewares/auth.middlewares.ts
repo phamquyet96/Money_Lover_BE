@@ -13,7 +13,6 @@ class AuthMiddleware {
         console.log(req.headers.authorization);
 
         if (authHeader) {
-            console.log(authHeader);
 
             const token = authHeader.split(" ")[1];
             jwt.verify(token, `${process.env.JWT_SECRET_KEY}`, async (err, decoded) => {
