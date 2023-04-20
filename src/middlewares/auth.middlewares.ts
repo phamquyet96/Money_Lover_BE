@@ -2,7 +2,6 @@ import dataSource from "../database/data-source";
 import User from "../models/user.model";
 import jwt from 'jsonwebtoken';
 import BaseController from "../controllers/base.controller";
-require('dotenv').config();
 
 let userRepo = dataSource.getRepository(User);
 
@@ -10,11 +9,8 @@ class AuthMiddleware {
 
     static checkAuthentication(req, res, next) {
         const authHeader = req.headers.authorization;
-        console.log(authHeader,1111111)
         if (authHeader) {
-
             const token = authHeader.split(" ")[1];
-            console.log(token)
             jwt.verify(token, `${process.env.JWT_SECRET_KEY}`, async (err, decoded) => {
                 if (err) {
                     console.log(err)
