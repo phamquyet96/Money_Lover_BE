@@ -81,15 +81,15 @@ class WalletServices extends BaseServices {
         return totalBalance;
     }
 
-    static async getWalletsByIncludedInTotal(userId: number, isIncluded: boolean): Promise<Wallet[]> {
-        let wallets = await walletRepo.findBy({
-            includeTotal: isIncluded,
-            user: {
-                id: userId
-            }
-        });
-        return wallets;
-    }
+    // static async getWalletsByIncludedInTotal(userId: number, isIncluded: boolean): Promise<Wallet[]> {
+    //     let wallets = await walletRepo.findBy({
+    //         includeTotal: isIncluded,
+    //         user: {
+    //             id: userId
+    //         }
+    //     });
+    //     return wallets;
+    // }
 
     static async updateWallet({walletId, name, initialBalance, includeTotal, active}): Promise<void> {
         let wallet = await this.getWalletById(walletId);
@@ -100,7 +100,10 @@ class WalletServices extends BaseServices {
         await walletRepo.save(wallet);
     }
 
-    static async addWallet(user: User,name: string ,initial_balance : number, includeTotal:boolean): Promise<Wallet>{
+    static async addWallet(user: User,
+                            name: string,
+                            initial_balance: number, 
+                            includeTotal:number): Promise<Wallet>{
         let wallet = new Wallet();
         wallet.user = user;
         wallet.name = name;
