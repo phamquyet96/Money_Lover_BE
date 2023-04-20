@@ -5,7 +5,6 @@ import BaseController from "./base.controller";
 import User from "../models/user.model";
 import AuthServices from "../services/auth.services";
 import BaseServices from "../services/base.services";
-import UserServices from "../services/user.services";
 
 let userRepo = dataSource.getRepository(User);
 
@@ -25,13 +24,16 @@ class AuthController extends BaseController {
     static async login(req: Request, res: Response) {
         try {
             let { email, password } = req.body;
+            console.log(email, password );
             let [accessToken, refreshToken] = await AuthServices.checkAuthAndGenerateTokens(email, password);
+            console.log(accessToken, refreshToken)
             res.status(200).json({
                 accessToken: accessToken,
                 refreshToken: refreshToken,
             });
         }
         catch (err: any) {
+            console.log(err)
             res.status(500).json({ message: err.message || this.defaultErrorMessage });
         }
     }

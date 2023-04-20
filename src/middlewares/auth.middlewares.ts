@@ -10,6 +10,7 @@ class AuthMiddleware {
 
     static checkAuthentication(req, res, next) {
         const authHeader = req.headers.authorization;
+        console.log(authHeader);
         if (authHeader) {
             const token = authHeader.split(" ")[1];
             jwt.verify(token, `${process.env.JWT_SECRET_KEY}`, async (err, decoded) => {

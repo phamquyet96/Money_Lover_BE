@@ -26,7 +26,7 @@ class AuthServices extends BaseServices {
         return user
     }
 
-    static async checkAuthAndGenerateTokens(email, password): Promise<string[]> {
+    static async checkAuthAndGenerateTokens(email, password): Promise<any> {
         let user = await UserServices.getUserByEmail(email);
         if (!user) {
             throw new Error("Wrong email or password");
