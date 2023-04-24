@@ -9,6 +9,10 @@ import WalletRouter from "./routers/wallet.router";
 import UserRouter from "./routers/user.router";
 import dataSource from "./database/data-source";
 import Transaction from "./models/transaction.model";
+import TransTypeRouter from "./routers/transtype.router";
+import TransactionRouter from "./routers/transcation.router";
+import TransCateRouter from "./routers/transcate.router";
+import TransSubCateRouter from "./routers/transsubcate.router";
 class App {
   private app: express.Application = express();
 
@@ -67,7 +71,11 @@ class App {
     this.app.use("/api/auth", AuthRouter);
     this.app.use(AuthMiddleware.checkAuthentication);
     this.app.use("/api/wallet", WalletRouter);
+    this.app.use("/api/transaction-subcategory", TransSubCateRouter);
+    this.app.use("/api/transaction-category", TransCateRouter);
     this.app.use("/api/user", UserRouter);
+    this.app.use("/api/transaction", TransactionRouter);
+    this.app.use("/api/type", TransTypeRouter);
   }
 
   private listen(): void {
