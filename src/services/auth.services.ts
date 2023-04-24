@@ -48,7 +48,6 @@ class AuthServices extends BaseServices {
     static async changePassword(user, oldPassword, newPassword) {
         let oldPasswords = user.password;
         let confirmPasswordSuccess = await bcrypt.compare(oldPassword, oldPasswords);
-        console.log(confirmPasswordSuccess)
         if (confirmPasswordSuccess) {
             user.password = await bcrypt.hash(newPassword, 10);
             await userRepo.save(user);
@@ -59,24 +58,18 @@ class AuthServices extends BaseServices {
     }
 
     static async sendEmailVerificationRequest(email: string): Promise<void> {
-        let token = this.generateTokenFromString(email);
         let options = {
             from: process.env.AUTH_EMAIL,
             to: email,
             subject: 'Money Lover Email Verification',
             html: `
             <div>
-                <span>Dear New User</span>
                 <p>
                     You have just registered a Money Lover account.<br/>
                     Please click the following link to verify your email:
                 </p>
-                <a href="http://localhost:3000/verify/${token}">
-                    http://localhost:3000/verify/${token}
+                <a href="http://localhost:3000/auth/login">
                 </a>
-                <p>
-                    Please ignore this email if you didn't register.
-                </p>
             </div>
             `
         }

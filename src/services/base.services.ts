@@ -38,7 +38,7 @@ class BaseServices {
     static generateAccessToken(user: User): string {
         let { id, email, name, image } = user;
         let payload = { id, email, name, image };
-        return jwt.sign(payload, `${process.env.JWT_SECRET_KEY}`, { expiresIn: "15m" }
+        return jwt.sign(payload, `${process.env.JWT_SECRET_KEY}`, { expiresIn: "5m" }
         );
     }
 
