@@ -6,10 +6,14 @@ import Wallet from "../models/wallet.model";
 let userRepo = dataSource.getRepository(User)
 
 class UserServices {
-    static async updateUser(userId: number, userImage: string): Promise<void> {
-        const user = await userRepo.findOneBy({ id: userId })
-        user.image = userImage
-        await userRepo.save(user)
+    static async updateUser(userId: number, data: any): Promise<void> {
+        await userRepo
+          .createQueryBuilder()
+          .update(User)
+          .set(data)
+          .where("id = :id", { id: userId })
+          .execute();
+
     }
     static async getUserByEmail(email: string) {
         return await userRepo.findOneBy({email: email});
