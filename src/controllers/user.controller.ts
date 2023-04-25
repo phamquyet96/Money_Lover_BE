@@ -42,24 +42,11 @@ class UserController extends BaseController {
         res.status(500).json({message: err.message});
       })
   }
-  async getIdByToken (req: Request, res: Response) {
-    const userHeader = req.headers.authorization;
-    if (userHeader) {
-      const token = userHeader.split(" ")[1];
-      jwt.verify(token, `${process.env.JWT_SECRET_KEY}`, async (err, decoded : any) => {
-        if (err) {
-          console.log(err)
-          return res.status(403).json("Token is not valid!");
-        }
-        let user = await userRepo.findOneBy({id: decoded.id});
-        if (!user) {
-          return res.status(401).json({message: 'Unauthorized!'});
-        }
-        res.status(200).json({user})
-      });
-    } else {
-      res.status(401).json("You are not authenticated!");
-    }
+  async me (req: Request, res: Response) {
+     return res.json({
+       status: 'success',
+       data: req.user
+     })
   }
 
 }

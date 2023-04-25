@@ -69,7 +69,9 @@ class App {
     //
 
     this.app.use("/api/auth", AuthRouter);
+
     this.app.use(AuthMiddleware.checkAuthentication);
+
     this.app.use("/api/wallet", WalletRouter);
     this.app.use("/api/transaction-subcategory", TransSubCateRouter);
     this.app.use("/api/transaction-category", TransCateRouter);

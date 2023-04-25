@@ -35,9 +35,6 @@ class AuthServices extends BaseServices {
         if (!match) {
             throw new Error("Wrong email or password");
         }
-        // if (!user.active) {
-        //     throw new Error("Please verify your email to login");
-        // }
         let accessToken = this.generateAccessToken(user);
         let refreshToken = this.generateRefreshToken(user);
         user.refreshToken = refreshToken;
@@ -46,11 +43,12 @@ class AuthServices extends BaseServices {
     }
 
     static async changePassword(user, oldPassword, newPassword) {
-        let oldPasswords = user.password;
-        let confirmPasswordSuccess = await bcrypt.compare(oldPassword, oldPasswords);
+        let userLogin = await userRepo.findOneBy({id: user.id});
+        let confirmPasswordSuccess = await bcrypt.compare(oldPassword, userLogin.password);
+        console.log(confirmPasswordSuccess);
         if (confirmPasswordSuccess) {
-            user.password = await bcrypt.hash(newPassword, 10);
-            await userRepo.save(user);
+            userLogin.password = await bcrypt.hash(newPassword, 10);
+            await userRepo.save(userLogin);
         }
         else {
             throw new Error("Password Mismatch");
