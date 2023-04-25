@@ -10,7 +10,7 @@ class WalletServices extends BaseServices {
     static async getAllWalletsOfUser(userId: number): Promise<Wallet[] | null> {
         return await walletRepo.createQueryBuilder('wallet')
             .innerJoin('wallet.user', 'user')
-            .select('wallet.name, wallet.balance, wallet.includeTotal, wallet.active, wallet.id')
+            .select('wallet.name, wallet.balance, wallet.initialBalance, wallet.includeTotal, wallet.active, wallet.id')
             .where('user.id = :id', { id: userId })
             .getRawMany();
     }
