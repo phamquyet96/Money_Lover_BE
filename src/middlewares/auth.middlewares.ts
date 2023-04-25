@@ -16,11 +16,14 @@ class AuthMiddleware {
                 if (err) {
                     return res.status(403).json("Token is not valid!");
                 }
-                let user = await userRepo.findOneBy({id: decoded.id});
+                let user = await userRepo.findOneBy({
+                        id: decoded.id
+                });
                 if (!user) {
                     return res.status(401).json({message: 'Unauthorized!'});
                 }
-                req.user = user;
+                const {id, name, email} = user
+                req.user = {id, name, email};
                 next();
             });
         } else {
