@@ -4,15 +4,21 @@ import Wallet from "../models/wallet.model";
 import User from "../models/user.model";
 
 let walletRepo = dataSource.getRepository(Wallet);
+let userRepo = dataSource.getRepository(User);
 const [INCOME, EXPENSE] = [1, 2];
 
 class WalletServices extends BaseServices {
-    static async getAllWalletsOfUser(userId: number): Promise<Wallet[] | null> {
-        return await walletRepo.createQueryBuilder('wallet')
-            .innerJoin('wallet.user', 'user')
-            .select('wallet.name, wallet.balance, wallet.initialBalance, wallet.includeTotal, wallet.active, wallet.id')
-            .where('user.id = :id', { id: userId })
-            .getRawMany();
+    static async getAllWalletsOfUser(userId: number): Promise<Wallet[] | any> {
+        let user = await userRepo.find({
+            where: {
+                id: userId
+            },
+            relations: {
+                wallets: true
+            }
+        })
+
+        return user[0].wallets;
     }
 
     static async adjustBalance(walletId: number, money: number): Promise<void> {
