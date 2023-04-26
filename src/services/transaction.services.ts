@@ -10,7 +10,6 @@ let transactionRepo = dataSource.getRepository(Transaction);
 let transSubCateRepo = dataSource.getRepository(TransSubCate);
 
 const [INCOME, EXPENSE] = ["Income", "Expense"];
-const [OTHER_INCOME_ID, OTHER_EXPENSE_ID] = [34, 20];
 
 class TransactionServices extends BaseServices {
 

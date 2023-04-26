@@ -14,6 +14,7 @@ class TransactionController extends BaseController {
 
   static getTransactions(req: any, res: Response) {
     let userId = req.user.id;
+    console.log(1,userId);
     TransactionServices.getTransactions(userId,req.query)
       .then(transactions => {
         res.json(transactions);

@@ -6,7 +6,7 @@ const UserRouter: Router = express.Router();
 
 const userController = new UserController();
 
-// UserRouter.get('/account/:userId', userController.userInfo)
+UserRouter.get('/account/:userId', userController.userInfo)
 UserRouter.put('/update-profile/:userId',authMiddlewares.checkAuthentication, userController.update)
 UserRouter.delete('/account/:userId', userController.delete)
 UserRouter.get('/me', userController.me)
