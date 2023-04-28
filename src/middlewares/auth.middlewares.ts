@@ -18,7 +18,7 @@ class AuthMiddleware {
                 }
                 let user = await userRepo.findOneBy({
                         id: decoded.id
-                });
+                }); console.log(user);
                 if (!user) {
                     return res.status(401).json({message: 'Unauthorized!'});
                 }

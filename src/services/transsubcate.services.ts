@@ -3,6 +3,7 @@ import dataSource from "../database/data-source";
 import TransSubCate from "../models/trans.subcate.model";
 import TransCate from "../models/trans.cate.model";
 import subCategoriesValues from "../database/subcategories";
+import { log } from "console";
 
 const EntityManager = dataSource.manager;
 let transSubCateRepo = dataSource.getRepository(TransSubCate);
@@ -32,6 +33,8 @@ class TransSubCateServices extends BaseServices {
   }
 
   static async getSubCateById(subCateId: number): Promise<TransSubCate> {
+    const transAll = await transSubCateRepo.find({ });
+    console.log(transAll);
     let transSubCate = await transSubCateRepo.findOneBy({ id: subCateId });
     if (!transSubCate) {
       throw new Error("Transaction subcategory not found");

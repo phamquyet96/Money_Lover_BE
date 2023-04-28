@@ -61,7 +61,7 @@ class App {
     this.app.use('/test', async (req, res) => {
       let transactionRepo = dataSource.getRepository(Transaction)
       let result = await transactionRepo.createQueryBuilder('trans')
-          .where('trans.date >= :startDate', {startDate: '2023-02-22'})
+          .where('trans.date >= :startDate', {startDate: '01-01-2023'})
           .getMany()
       res.json(result)
     })

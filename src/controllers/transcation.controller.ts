@@ -7,6 +7,7 @@ import TransactionServices from "../services/transaction.services";
 import WalletServices from "../services/wallet.services";
 
 import { Request, Response } from "express";
+import { log } from "console";
 
 const [INCOME, EXPENSE] = ["Income", "Expense"];
 
@@ -14,6 +15,7 @@ class TransactionController extends BaseController {
 
   static getTransactions(req: any, res: Response) {
     let userId = req.user.id;
+    console.log(userId);
     TransactionServices.getTransactions(userId,req.query)
       .then(transactions => {
         res.json(transactions);
