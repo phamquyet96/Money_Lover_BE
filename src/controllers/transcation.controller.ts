@@ -13,10 +13,14 @@ const [INCOME, EXPENSE] = ["Income", "Expense"];
 class TransactionController extends BaseController {
 
   static getTransactions(req: any, res: Response) {
-    let userId = req.user.id;
-    TransactionServices.getTransactions(userId,req.query)
-      .then(transactions => {
-        res.json(transactions);
+    let walletId = req.query.walletId;
+    let startDate = req.query.startDate;
+    let endDate = req.query.endDate;
+
+    TransactionServices.getTransactionOfUserByTime(walletId, startDate, endDate)
+      .then(result => {
+        console.log(result);
+        res.json(result);
       })
   }
 
