@@ -4,7 +4,7 @@ import TransSubCate from "../models/trans.subcate.model";
 import dataSource from "../database/data-source";
 import WalletServices from "./wallet.services";
 import TransSubCateServices from "./transsubcate.services";
-import Wallet from "../models/wallet.model";
+import {Between} from "typeorm";
 
 let transactionRepo = dataSource.getRepository(Transaction);
 let transSubCateRepo = dataSource.getRepository(TransSubCate);
@@ -356,6 +356,39 @@ class TransactionServices extends BaseServices {
     await this.addTransaction(walletId, subcategory.id, money, new Date(), null, "Adjust Balance");
   }
 
+  static async getTransactionOfUserByTime(walletId: number, startDate: string, endDate:string): Promise<any> {
+    let result =  await transactionRepo.find({
+      where: {
+        wallet: {
+          id: walletId
+        },
+        date: Between(
+            new Date(startDate),
+            new Date(endDate)
+        ),
+      },
+      relations: ['subCategory', 'subCategory.category']
+    })
+
+    // tinh tong outcome;
+    let transactionOutcome = this.getTransactionOutcome(result);
+    let sum = this.getSumMoneyTransaction(transactionOutcome);
+    return {
+      transactions: result,
+      totalMoneyOutcome: sum
+
+    }
+  }
+
+  private static getSumMoneyTransaction(transactionOutcome: Transaction[]) {
+    return transactionOutcome.reduce((total, item) => {
+      return total + item.money;
+    }, 0);
+  }
+
+  private static getTransactionOutcome(result: Transaction[]) {
+    return result.filter(item => item.subCategory.category.id == 2);
+  }
 }
 
 export default TransactionServices;

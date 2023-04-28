@@ -1,9 +1,9 @@
 import dataSource from "../database/data-source";
 import User from "../models/user.model";
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 import BaseController from "../controllers/base.controller";
 
-require("dotenv").config();
+require('dotenv').config();
 
 let userRepo = dataSource.getRepository(User);
 
@@ -21,10 +21,10 @@ class AuthMiddleware {
           id: decoded.id
         });
         if (!user) {
-          return res.status(401).json({ message: "Unauthorized!" });
+          return res.status(401).json({message: 'Unauthorized!'});
         }
-        const { id, name, email } = user;
-        req.user = { id, name, email };
+        const {id, name, email} = user
+        req.user = {id, name, email};
         next();
       });
     } else {
@@ -39,21 +39,21 @@ class AuthMiddleware {
         if (err) {
           return res.status(403).json("Refresh token is not valid!");
         }
-        let user = await userRepo.findOneBy({ id: decoded.id });
-        if (user.refreshToken == refreshToken) {
+        let user = await userRepo.findOneBy({id: decoded.id});
+        if (user.refreshToken === refreshToken) {
           let payload = {
             id: user.id,
             email: user.email,
             name: user.name,
             image: user.image
-          };
+          }
           const newAccessToken = BaseController.generateAccessToken(payload);
           const newRefreshToken = BaseController.generateRefreshToken(payload);
-          user.refreshToken = newRefreshToken;
-          await userRepo.save(user);
+          user.refreshToken = newRefreshToken
+          await userRepo.save(user)
           res.status(200).json({
             accessToken: newAccessToken,
-            refreshToken: newRefreshToken
+            refreshToken: newRefreshToken,
           });
         } else {
           return res.status(403).json("Refresh token is not valid!");
@@ -65,4 +65,3 @@ class AuthMiddleware {
 }
 
 export default AuthMiddleware;
-
