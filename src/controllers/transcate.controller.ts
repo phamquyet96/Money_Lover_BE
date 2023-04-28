@@ -6,7 +6,7 @@ import User from "../models/user.model";
 
 class TransCateController extends BaseController {
   async getAllCates(req: Request, res: Response) {
-    TransCateServices.getAllCates(req.user as User)
+    TransCateServices.getAllCates()
       .then(transCates => {
         res.status(200).json(transCates);
       })
