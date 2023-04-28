@@ -2,6 +2,7 @@ import dataSource from "../database/data-source";
 import User from "../models/user.model";
 import jwt from 'jsonwebtoken';
 import BaseController from "../controllers/base.controller";
+
 require('dotenv').config();
 
 let userRepo = dataSource.getRepository(User);
@@ -17,8 +18,9 @@ class AuthMiddleware {
                     return res.status(403).json("Token is not valid!");
                 }
                 let user = await userRepo.findOneBy({
-                        id: decoded.id
+                    id: decoded.id
                 });
+                console.log(user)
                 if (!user) {
                     return res.status(401).json({message: 'Unauthorized!'});
                 }
@@ -62,5 +64,6 @@ class AuthMiddleware {
     }
 
 }
+
 export default AuthMiddleware;
 
