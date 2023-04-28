@@ -8,6 +8,7 @@ import {Request, Response} from "express";
 import WalletModel from "../models/wallet.model";
 import dataSource from "../database/data-source";
 import Wallet from "../models/wallet.model";
+import TransSubCateServices from "../services/transsubcate.services";
 let walletRepo = dataSource.getRepository(Wallet);
 const [INCOME, EXPENSE] = ["Income", "Expense"];
 
@@ -52,25 +53,25 @@ class TransactionController extends BaseController {
         try {
             let {walletId, subcategoryId, money, date, image, note} = req.body
             await TransactionServices.addTransaction(walletId, subcategoryId, money, date, image, note);
-            await this.calculateBalance(walletId, money, subcategoryId)
-            // await WalletServices.updateBalance(walletId);
-            res.status(200).json({message: "Added transaction successfully"});
+            let wallet = await TransactionController.updateBalanceWallet(walletId, money, subcategoryId)
+            res.status(200).json({message: "Added transaction successfully", wallet: wallet}, );
         } catch (err) {
             console.log(err);
             res.status(500).json({message: err.message});
         }
     }
 
-    static async calculateBalance(walletId: number, money: number, subcategoryId: number) {
+    static async updateBalanceWallet(walletId: number, money: number, subcategoryId: number) {
         try {
             console.log(walletId, money, subcategoryId)
-            // const wallet = await walletRepo.findOneByOrFail({id: walletId});
-            // if (subId == 1) {
-            //     wallet.balance = wallet.balance + money;
-            // } else {
-            //     wallet.balance = wallet.balance - money;
-            // }
-            // return walletRepo.save(wallet);
+            const wallet = await walletRepo.findOneByOrFail({id: walletId});
+            const subcategory = await TransSubCateServices.getSubCateById(subcategoryId)
+            if (subcategory.category.id == 1) {
+                wallet.balance = +wallet.balance + +money;
+            } else {
+                wallet.balance = +wallet.balance - +money;
+            }
+            return walletRepo.save(wallet);
         } catch (err) {
             console.log(err)
         }

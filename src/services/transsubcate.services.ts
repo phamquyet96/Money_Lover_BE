@@ -32,11 +32,18 @@ class TransSubCateServices extends BaseServices {
   }
 
   static async getSubCateById(subCateId: number): Promise<TransSubCate> {
-    let transSubCate = await transSubCateRepo.findOneBy({ id: subCateId });
-    if (!transSubCate) {
+    let transSubCate = await transSubCateRepo.find({
+      relations:{
+        category: true
+      },
+      where: {
+        id: subCateId
+      }
+    });
+    if (!transSubCate[0]) {
       throw new Error("Transaction subcategory not found");
     }
-    return transSubCate;
+    return transSubCate[0];
   }
   static async add(cateId, userId, name): Promise<void> {
     await transSubCateRepo.save({
