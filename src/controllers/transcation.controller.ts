@@ -19,7 +19,6 @@ class TransactionController extends BaseController {
 
     TransactionServices.getTransactionOfUserByTime(walletId, startDate, endDate)
       .then(result => {
-        console.log(result);
         res.json(result);
       })
   }
