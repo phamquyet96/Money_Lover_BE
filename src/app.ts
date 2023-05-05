@@ -13,6 +13,7 @@ import TransTypeRouter from "./routers/transtype.router";
 import TransactionRouter from "./routers/transcation.router";
 import TransCateRouter from "./routers/transcate.router";
 import TransSubCateRouter from "./routers/transsubcate.router";
+import TransReport from "./routers/chart.router";
 class App {
   private app: express.Application = express();
 
@@ -78,6 +79,7 @@ class App {
     this.app.use("/api/user", UserRouter);
     this.app.use("/api/transaction", TransactionRouter);
     this.app.use("/api/type", TransTypeRouter);
+    this.app.use("/api/report", TransReport);
   }
 
   private listen(): void {
