@@ -116,7 +116,6 @@ class WalletServices extends BaseServices {
         wallet.balance = initial_balance;
         wallet.initialBalance = initial_balance;
         wallet.includeTotal = includeTotal;
-        console.log(wallet);
         await walletRepo.save(wallet);
         return wallet
     }
