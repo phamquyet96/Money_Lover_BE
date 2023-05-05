@@ -10,7 +10,6 @@ let transactionRepo = dataSource.getRepository(Transaction);
 let transSubCateRepo = dataSource.getRepository(TransSubCate);
 
 const [INCOME, EXPENSE] = ["Income", "Expense"];
-const [OTHER_INCOME_ID, OTHER_EXPENSE_ID] = [34, 20];
 
 class TransactionServices extends BaseServices {
 
@@ -92,52 +91,52 @@ class TransactionServices extends BaseServices {
       .addSelect('subCategory.name', 'subCate_name')
       .addSelect('type.name', 'type_name')
       .where('wallet.id = :id', { id: walletId })
-    if (!data.startDate) {
-      if (data.date) {
-        if (data.date === '') {
-          myDate = `${data.year}-${data.month}%`
-        } else {
-          myDate = `${data.year}-${data.month}-${data.date}%`
-        }
-        query = query.andWhere('trans.date LIKE :date', {date: myDate})
-      } else {
-        myDate = `${data.year}-${data.month}%`
-        query = query.andWhere('trans.date LIKE :date', {date: myDate})
-      }
-    } else {
-      let start = data.startDate.split('/').reverse().join('-')
-      let end = data.endDate.split('/').reverse().join('-')
-      query = query.andWhere('trans.date >= :startDate', {startDate: start})
-        .andWhere('trans.date <= :endDate', {endDate: end})
-    }
+    // if (!data.startDate) {
+    //   if (data.date) {
+    //     if (data.date === '') {
+    //       myDate = `${data.year}-${data.month}%`
+    //     } else {
+    //       myDate = `${data.year}-${data.month}-${data.date}%`
+    //     }
+    //     query = query.andWhere('trans.date LIKE :date', {date: myDate})
+    //   } else {
+    //     myDate = `${data.year}-${data.month}%`
+    //     query = query.andWhere('trans.date LIKE :date', {date: myDate})
+    //   }
+    // } else {
+    //   let start = data.startDate.split('/').reverse().join('-')
+    //   let end = data.endDate.split('/').reverse().join('-')
+    //   query = query.andWhere('trans.date >= :startDate', {startDate: start})
+    //     .andWhere('trans.date <= :endDate', {endDate: end})
+    // }
     return query
       .getRawMany()
-      .then((trans) => {
-        let arr = [];
-        let dates = trans.map(tran => {return tran.date.toString()})
-        let uniqueDate = Array.from(new Set(dates))
-        for (let i = 0; i < uniqueDate.length; i++) {
-          let obj = {
-            date: uniqueDate[i],
-            sum: 0,
-            transOfDate: []
-          }
-          for (let j = 0; j < trans.length; j++) {
-            if (trans[j].date.toString() === uniqueDate[i]) {
-              obj.transOfDate.push(trans[j])
-              if (trans[j].type_name === 'Income') {
-                obj.sum += trans[j].money
-              } else {
-                obj.sum -= trans[j].money
-              }
-            }
-          }
-          arr.push(obj)
-        }
-        return arr.sort((a: any, b: any) => {
-          return new Date(b.date).valueOf() - new Date(a.date).valueOf()
-        })
-      })
+      // .then((trans) => {
+      //   let arr = [];
+      //   let dates = trans.map(tran => {return tran.date.toString()})
+      //   let uniqueDate = Array.from(new Set(dates))
+      //   for (let i = 0; i < uniqueDate.length; i++) {
+      //     let obj = {
+      //       date: uniqueDate[i],
+      //       sum: 0,
+      //       transOfDate: []
+      //     }
+      //     for (let j = 0; j < trans.length; j++) {
+      //       if (trans[j].date.toString() === uniqueDate[i]) {
+      //         obj.transOfDate.push(trans[j])
+      //         if (trans[j].type_name === 'Income') {
+      //           obj.sum += trans[j].money
+      //         } else {
+      //           obj.sum -= trans[j].money
+      //         }
+      //       }
+      //     }
+      //     arr.push(obj)
+      //   }
+      //   return arr.sort((a: any, b: any) => {
+      //     return new Date(b.date).valueOf() - new Date(a.date).valueOf()
+      //   })
+      // })
   }
 
   static async getTransactionsByTypeName(userId, data) {
@@ -319,11 +318,10 @@ class TransactionServices extends BaseServices {
     let wallet = await WalletServices.getWalletById(walletId);
     let subcategory = await TransSubCateServices.getSubCateById(subcategoryId);
     let transaction = new Transaction();
-
     transaction.wallet = wallet;
     transaction.subCategory = subcategory;
     transaction.money = money ? Number(money) : null;
-    transaction.date = typeof date == 'string' ? date.substring(0, 10) : date;
+    transaction.date = date;
     transaction.image = image;
     transaction.note = note;
     console.log(transaction.date)
@@ -339,7 +337,7 @@ class TransactionServices extends BaseServices {
     transaction.wallet = wallet;
     transaction.subCategory = subcategory;
     transaction.money = money ? +money : null;
-    transaction.date = typeof date == 'string' ? date.substring(0, 10) : date;
+    transaction.date = date;
     transaction.image = image;
     transaction.note = note;
 
