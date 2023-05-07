@@ -36,6 +36,7 @@ class WalletServices extends BaseServices {
 
     static async getWalletById(walletId: number): Promise<Wallet | null> {
         let wallet = await walletRepo.findOneBy({ id: walletId });
+        console.log(wallet);
         if (!wallet) {
             throw new Error('Wallet not found');
         }
