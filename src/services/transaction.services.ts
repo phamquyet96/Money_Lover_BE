@@ -358,9 +358,9 @@ class TransactionServices extends BaseServices {
   static async getTransactionOfUserByTime(walletId: number, startDate: string, endDate:string): Promise<any> {
     let result =  await transactionRepo.find({
       where: {
-        wallet: {
+        ...(walletId && {wallet: {
           id: walletId
-        },
+        }}),
         date: Between(
             new Date(startDate),
             new Date(endDate)
