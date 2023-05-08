@@ -94,6 +94,7 @@ class WalletController extends BaseController {
     static async updateWallet(req: Request, res: Response) {
         try {
             await WalletServices.updateWallet(req.body);
+            console.log(req.body)
             await WalletServices.updateBalance(req.body.walletId);
             res.status(200).json({ message: "Update wallet successfully!" });
         }
