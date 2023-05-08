@@ -97,9 +97,10 @@ class WalletServices extends BaseServices {
     //     return wallets;
     // }
 
-    static async updateWallet({walletId, name, initialBalance, includeTotal, active}): Promise<void> {
+    static async updateWallet({walletId, name , balance , initialBalance, includeTotal, active}): Promise<void> {
         let wallet = await this.getWalletById(walletId);
         wallet.name = name;
+        wallet.balance = balance;
         wallet.initialBalance = initialBalance;
         wallet.includeTotal = includeTotal;
         wallet.active = active;

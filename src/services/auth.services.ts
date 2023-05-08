@@ -6,6 +6,7 @@ import UserServices from "./user.services";
 import transporter from "../config/nodemailer.config";
 import jwt from "jsonwebtoken";
 require('dotenv').config();
+const mailer = require('../utils/mailer');
 
 let userRepo = dataSource.getRepository(User);
 
@@ -55,30 +56,13 @@ class AuthServices extends BaseServices {
         }
     }
 
-    static async sendEmailVerificationRequest(email: string): Promise<void> {
-        let options = {
-            from: process.env.AUTH_EMAIL,
-            to: email,
-            subject: 'Money Lover Email Verification',
-            html: `
-            <div>
-                <p>
-                    You have just registered a Money Lover account.<br/>
-                    Please click the following link to verify your email:
-                </p>
-                <a href="http://localhost:3000/auth/login">
-                </a>
-            </div>
-            `
+    static async sendEmailVerificationRequest(email): Promise<void> {
+        if(email){
+            bcrypt.hash(email, parseInt(process.env.BCRYPT_SALT_ROUND)).then((hashedEmail) => {
+                console.log(email)
+                mailer.sendMail(email, "Welcome to home page Money Lover! ", `<h4>Please enter this link to verify email </h4><br> <a href="localhost:3000/auth/login"> Verify Email </a>`)
+            });
         }
-        transporter.sendMail(options, (err, info) => {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                console.log('Message sent: ' + info.response);
-            }
-        })
     }
 
     static async verifyEmail({ token }): Promise<void> {

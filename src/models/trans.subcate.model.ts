@@ -18,7 +18,6 @@ export class TransSubCate {
 
     @Column({ name: "name", type: "varchar", length: 255, nullable: false })
     name: string;
-
     @OneToMany(() => Transaction, transaction => transaction.subCategory)
     transactions: Transaction[];
 

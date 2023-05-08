@@ -324,7 +324,6 @@ class TransactionServices extends BaseServices {
     transaction.date = date;
     transaction.image = image;
     transaction.note = note;
-    console.log(transaction.date)
 
     await transactionRepo.save(transaction);
   }

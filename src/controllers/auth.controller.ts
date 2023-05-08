@@ -13,8 +13,8 @@ class AuthController extends BaseController {
     static async register(req: Request, res: Response) {
         try {
             let user = await AuthServices.register(req.body);
-            await AuthServices.sendEmailVerificationRequest(req.body.email);
-            res.status(200).json({message: 'An email has been sent to your email. Please verify your email to continue'});
+            await AuthServices.sendEmailVerificationRequest(user.email);
+            // res.status(200).json({message: 'An email has been sent to your email. Please verify your email to continue'});
         } catch (err: any) {
             res.status(500).json({message: err.message || this.defaultErrorMessage})
         }
