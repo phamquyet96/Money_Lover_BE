@@ -366,16 +366,16 @@ class TransactionServices extends BaseServices {
             new Date(endDate)
         ),
       },
-      relations: ['subCategory', 'subCategory.category']
+      relations: ['subCategory', 'subCategory.category'],
     })
 
     // tinh tong outcome;
     let transactionOutcome = this.getTransactionOutcome(result);
     let sum = this.getSumMoneyTransaction(transactionOutcome);
+
     return {
       transactions: result,
       totalMoneyOutcome: sum
-
     }
   }
 

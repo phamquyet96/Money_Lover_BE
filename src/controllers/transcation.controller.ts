@@ -63,7 +63,6 @@ class TransactionController extends BaseController {
 
     static async updateBalanceWallet(walletId: number, money: number, subcategoryId: number) {
         try {
-            console.log(walletId, money, subcategoryId)
             const wallet = await walletRepo.findOneByOrFail({id: walletId});
             const subcategory = await TransSubCateServices.getSubCateById(subcategoryId)
             if (subcategory.category.id == 1) {
@@ -118,6 +117,7 @@ class TransactionController extends BaseController {
             res.status(500).json({message: err.message})
         }
     }
+
 
 }
 
