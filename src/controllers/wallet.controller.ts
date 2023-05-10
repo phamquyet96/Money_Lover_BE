@@ -78,25 +78,24 @@ class WalletController extends BaseController {
             })
     }
 
-    static getWalletsByIncludedIntotal(req: Request, res: Response) {
-        //@ts-ignore
-        let userId = req.user.id;
-        let isIncluded = req.params.isIncluded == "true" ? true : false;
-        // WalletServices.getWalletsByIncludedInTotal(userId, isIncluded)
-        //     .then(wallets => {
-        //         res.status(200).json(wallets);
-        //     })
-        //     .catch(err => {
-        //         res.status(500).json(err.message || this.defaultErrorMessage);
-        //     })
-    }
+    // static getWalletsByIncludedIntotal(req: Request, res: Response) {
+    //     //@ts-ignore
+    //     let userId = req.user.id;
+    //     let isIncluded = req.params.isIncluded == "true" ? true : false;
+    //     // WalletServices.getWalletsByIncludedInTotal(userId, isIncluded)
+    //     //     .then(wallets => {
+    //     //         res.status(200).json(wallets);
+    //     //     })
+    //     //     .catch(err => {
+    //     //         res.status(500).json(err.message || this.defaultErrorMessage);
+    //     //     })
+    // }
 
     static async updateWallet(req: Request, res: Response) {
         try {
-            await WalletServices.updateWallet(req.body);
-            console.log(req.body)
+            let update=await WalletServices.updateWallet(req.body);
             await WalletServices.updateBalance(req.body.walletId);
-            res.status(200).json({ message: "Update wallet successfully!" });
+            res.status(200).json({ message: "Update wallet successfully!" ,update});
         }
         catch (err) {
             res.status(500).json({ message: err.message || this.defaultErrorMessage });
